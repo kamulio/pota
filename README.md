@@ -2,7 +2,7 @@
 
 Bash scripts to automatically setup LAMP server following best practices.
 
-Current version: `lamp-ubuntu20.sh`
+Current version: `lamp-ubuntu22.sh`
 
 ## How to use
 
@@ -92,85 +92,5 @@ Current version: `lamp-ubuntu20.sh`
   * MySQL
   * NodeJS 12
 
-## Apache Configuration
 
-  * Change maximum number of concurrent request to unlimited: `MaxKeepAliveRequests 0`
-  * Change the default timeout: `Timeout 60`
-  * Add global settings for /srv/www directory, security settings, and caching:
-
-```
-<Directory /srv/www/>
-    Options FollowSymLinks -Indexes -Includes
-    AllowOverride all
-    Require all granted
-    Header set Access-Control-Allow-Origin "*"
-    Header set Timing-Allow-Origin: "*"
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-Frame-Options sameorigin
-    Header unset X-Powered-By
-    Header set X-UA-Compatible "IE=edge"
-    Header edit Set-Cookie ^(.*)$ $1;HttpOnly;Secure
-    Header set X-XSS-Protection "1; mode=block"
-</Directory>
-
-# Disable HTTP 1.0
-RewriteEngine On
-RewriteCond %{THE_REQUEST} !HTTP/1.1$
-RewriteRule .* - [F]
-
-# Disable unused HTTP request methods
-<LimitExcept GET POST HEAD>
-deny from all
-</LimitExcept>
-
-# Disable Trace HTTP request
-TraceEnable off
-
-# Disable SSL v2 & v3
-SSLProtocol –ALL +TLSv1.2 +TLSv1.3
-
-# Disable server signature
-ServerSignature Off
-ServerTokens Prod
-
-# Browser Caching #
-ExpiresActive On
-ExpiresDefault "access plus 30 days"
-ExpiresByType text/html "access plus 15 minutes"
-Header unset Last-Modified
-Header unset ETag
-FileETag None
-```
-
-  * Configure compression of svg images and font files
-  * Set correct mime type for font files
-  * Set correct priority of index files extensions
-  * Configure memory limits based on actual server memory
-  * Install ModPageSpeed and set CoreFilters
-  * Virtual servers configuration
-  * Log rotation and compression
-
-## PHP Configuration
-
-```
-output_buffering = Off
-max_execution_time = 60
-max_input_vars = 5000
-memory_limit = 256M
-error_reporting = E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED
-log_errors_max_len = 0
-post_max_size = 20M
-upload_max_filesize = 20M
-```
-
-## MySQL Configuration
-
-```
-key_buffer = 16M
-max_allowed_packet = 16M
-thread_stack = 192K
-thread_cache_size = 8
-table_cache = 64
-log_slow_queries = /var/log/mysql/mysql-slow.log
-long_query_time = 1
-```
+## Thank You. 
